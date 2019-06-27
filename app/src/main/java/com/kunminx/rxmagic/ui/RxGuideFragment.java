@@ -26,12 +26,13 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.kunminx.rxmagic.R;
 import com.kunminx.rxmagic.databinding.FragmentRxGuideBinding;
+import com.kunminx.rxmagic.ui.base.BaseFragment;
+import com.kunminx.rxmagic.ui.widget.ScrollListenableWebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +42,7 @@ import androidx.fragment.app.Fragment;
 /**
  * Create by KunMinX at 19/4/22
  */
-public class RxGuideFragment extends Fragment {
+public class RxGuideFragment extends BaseFragment {
 
 
     private FragmentRxGuideBinding mBinding;
@@ -71,16 +72,29 @@ public class RxGuideFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
 
         mBinding.webView.getSettings().setUseWideViewPort(true);
-//        mBinding.webView.getSettings().setJavaScriptEnabled(true);
+        mBinding.webView.getSettings().setJavaScriptEnabled(true);
         mBinding.webView.getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
-        mBinding.webView.loadUrl("https://github.com/KunMinX/RxJava2-Operators-Sample/blob/master/README.md");
+        mBinding.webView.loadUrl(getString(R.string.link_guide));
         mBinding.webView.setWebChromeClient(new WebChromeClientProgress());
+        mBinding.webView.setListener(new ScrollListenableWebView.OnScrollChangeListener() {
+            @Override
+            public void onPageEnd(int l, int t, int oldl, int oldt) {
+                mBinding.btnGot.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageTop(int l, int t, int oldl, int oldt) {
+
+            }
+
+            @Override
+            public void onScrollChanged(int l, int t, int oldl, int oldt) {
+
+            }
+        });
 
         mBinding.btnGot.setOnClickListener(v -> {
-            Snackbar.make(mBinding.btnGot, getString(R.string.tip_developing), Snackbar.LENGTH_SHORT)
-                    .setAnchorView(mBinding.btnGot)
-                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
-                    .show();
+            showTip(v, getString(R.string.tip_got_it));
         });
     }
 

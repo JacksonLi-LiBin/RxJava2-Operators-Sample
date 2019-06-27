@@ -1,0 +1,80 @@
+<!--
+    ~ Copyright (c) 2018-2019. KunMinX
+    ~
+    ~ Licensed under the Apache License, Version 2.0 (the "License");
+    ~ you may not use this file except in compliance with the License.
+    ~ You may obtain a copy of the License at
+    ~
+    ~    http://www.apache.org/licenses/LICENSE-2.0
+    ~
+    ~ Unless required by applicable law or agreed to in writing, software
+    ~ distributed under the License is distributed on an "AS IS" BASIS,
+    ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    ~ See the License for the specific language governing permissions and
+    ~ limitations under the License.
+    ~
+-->
+
+<resources>
+    <string name="app_name">RxJava魔法师</string>
+
+    <!--drawer items-->
+    <string name="guide">理念</string>
+    <string name="declare">声明式演练</string>
+    <string name="group_samples">案例</string>
+    <string name="operators">操作符示例</string>
+    <string name="networking">网络示例</string>
+    <string name="cache">缓存示例</string>
+    <string name="rx_bus">RxBus示例</string>
+    <string name="pagination">分页加载示例</string>
+    <string name="compose">Compose复用</string>
+    <string name="search">搜索示例</string>
+    <string name="group_more">更多</string>
+    <string name="setting">设置</string>
+    <string name="about">关于</string>
+
+    <!--buttons-->
+    <string name="doSomeWork">doSomeWork</string>
+    <string name="click_me">点击我</string>
+    <string name="result">结果</string>
+    <string name="copy">复制</string>
+    <string name="view_integrity">查看输出代码</string>
+    <string name="i_got_it">我掌握了</string>
+    <string name="share">分享</string>
+    <string name="btn_name_add">新增</string>
+    <string name="btn_name_remove">移除</string>
+    <string name="btn_name_close">完成</string>
+    <string name="btn_name_clear">清空</string>
+
+    <!--tips-->
+    <string name="about_me">- Produce by KunMinX with Love -</string>
+    <string name="test_code">
+        输出：\n\nObservable.just(1, 3, 5, 7, 9)\n .map(i -&gt; i + 1)\n .filter(i -&gt; i &lt; 5)\n .subscribe(getObserve());\n
+    </string>
+    <string name="code_tip">
+        提示:\n\n 点击"新增"按钮以开始.\n
+    </string>
+    <string name="tip_developing">功能开发中 ^_^</string>
+    <string name="tip_of_developing">点击"新增"按钮以开始 ^_^</string>
+    <string name="tip_got_it">恭喜！ ^_^</string>
+
+    <string name="dialog_title_warning">请确认</string>
+    <string name="dialog_msg_clear_op_list">确定要清空操作符列表吗 ?</string>
+    <string name="sure">确认</string>
+    <string name="cancel">取消</string>
+
+    <!--links-->
+    <string name="link_guide">https://mp.weixin.qq.com/s/LQLvwtmKNoOfiCtl4iADgw</string>
+    <string name="link_about">https://github.com/KunMinX/RxJava2-Operators-Sample/blob/master/README.md</string>
+
+    <!--datas-->
+    <string name="operators_json">
+        [{\"header\":\"创建\",\"isHeader\":true},{\"isHeader\":false,\"info\":{\"content\":\"复杂数据遍历\",\"group\":\"创建\",\"title\":\"just\"}},{\"isHeader\":false,\"info\":{\"content\":\"复杂数据遍历\",\"group\":\"创建\",\"title\":\"fromArray\"}},{\"isHeader\":false,\"info\":{\"content\":\"复杂数据遍历\",\"group\":\"创建\",\"title\":\"fromIterable\"}},{\"isHeader\":false,\"info\":{\"content\":\"定时任务\",\"group\":\"创建\",\"title\":\"interval\"}},{\"isHeader\":false,\"info\":{\"content\":\"定时任务\",\"group\":\"创建\",\"title\":\"intervalRange\"}},{\"isHeader\":false,\"info\":{\"content\":\"嵌套回调异步事件\",\"group\":\"创建\",\"title\":\"create\"}},{\"isHeader\":false,\"info\":{\"content\":\"延迟任务\",\"group\":\"创建\",\"title\":\"defer\"}},{\"isHeader\":false,\"info\":{\"content\":\"延迟任务\",\"group\":\"创建\",\"title\":\"timer\"}},{\"header\":\"变换\",\"isHeader\":true},{\"isHeader\":false,\"info\":{\"content\":\"变换\",\"group\":\"变换\",\"title\":\"map\"}},{\"isHeader\":false,\"info\":{\"content\":\"变换\",\"group\":\"变换\",\"title\":\"flatMap\"}},{\"isHeader\":false,\"info\":{\"content\":\"变换\",\"group\":\"变换\",\"title\":\"concatMap\"}},{\"header\":\"合并\",\"isHeader\":true},{\"isHeader\":false,\"info\":{\"content\":\"组合多个被观察者，合并事件\",\"group\":\"合并\",\"title\":\"concatArray\"}},{\"isHeader\":false,\"info\":{\"content\":\"组合多个被观察者，合并事件\",\"group\":\"合并\",\"title\":\"concatDelayError\"}},{\"isHeader\":false,\"info\":{\"content\":\"组合多个被观察者，合并事件\",\"group\":\"合并\",\"title\":\"megerArray\"}},{\"isHeader\":false,\"info\":{\"content\":\"组合多个被观察者，合并事件\",\"group\":\"合并\",\"title\":\"megerArrayDelayError\"}},{\"isHeader\":false,\"info\":{\"content\":\"组合多个被观察者，合并为一个被观察者\",\"group\":\"合并\",\"title\":\"zip\"}},{\"isHeader\":false,\"info\":{\"content\":\"组合多个被观察者，合并为一个被观察者\",\"group\":\"合并\",\"title\":\"combineLatest\"}},{\"isHeader\":false,\"info\":{\"content\":\"发送事件前追加其他事件\",\"group\":\"合并\",\"title\":\"startWithArray\"}},{\"isHeader\":false,\"info\":{\"content\":\"组合多个事件为一个事件\",\"group\":\"合并\",\"title\":\"reduce\"}},{\"isHeader\":false,\"info\":{\"content\":\"组合多个事件为一个事件\",\"group\":\"合并\",\"title\":\"collect\"}},{\"isHeader\":false,\"info\":{\"content\":\"汇总发送事件数量\",\"group\":\"合并\",\"title\":\"count\"}},{\"header\":\"过滤\",\"isHeader\":true},{\"isHeader\":false,\"info\":{\"content\":\"指定过滤条件，过滤需要的事件/数据\",\"group\":\"过滤\",\"title\":\"filter\"}},{\"isHeader\":false,\"info\":{\"content\":\"过滤指定类型的事件/数据\",\"group\":\"过滤\",\"title\":\"ofType\"}},{\"isHeader\":false,\"info\":{\"content\":\"过滤条件不满足的事件/数据\",\"group\":\"过滤\",\"title\":\"skip\"}},{\"isHeader\":false,\"info\":{\"content\":\"过滤重复的事件/数据\",\"group\":\"过滤\",\"title\":\"distinct\"}},{\"isHeader\":false,\"info\":{\"content\":\"过滤重复的事件/数据\",\"group\":\"过滤\",\"title\":\"distinctUntilChanged\"}},{\"isHeader\":false,\"info\":{\"content\":\"按时间或数量过滤事件/数据\",\"group\":\"过滤\",\"title\":\"take\"}},{\"isHeader\":false,\"info\":{\"content\":\"过滤指定位置的事件\",\"group\":\"过滤\",\"title\":\"elementAt\"}},{\"isHeader\":false,\"info\":{\"content\":\"按时间段过滤事件\",\"group\":\"过滤\",\"title\":\"throttleFirst\"}},{\"isHeader\":false,\"info\":{\"content\":\"按时间段过滤事件\",\"group\":\"过滤\",\"title\":\"throttleLast\"}},{\"header\":\"条件\",\"isHeader\":true},{\"isHeader\":false,\"info\":{\"content\":\"判断所有事件是否满足\",\"group\":\"条件\",\"title\":\"all\"}},{\"isHeader\":false,\"info\":{\"content\":\"发送的事件判断条件不满足时，就会终止后续事件接收\",\"group\":\"条件\",\"title\":\"takeWhile\"}},{\"isHeader\":false,\"info\":{\"content\":\"发送的事件判断条件不满足时，才接收后续事件\",\"group\":\"条件\",\"title\":\"skipWhile\"}},{\"isHeader\":false,\"info\":{\"content\":\"同filter\",\"group\":\"条件\",\"title\":\"takeUntil\"}},{\"isHeader\":false,\"info\":{\"content\":\"接收判断条件满足之外的事件\",\"group\":\"条件\",\"title\":\"skipUntil\"}},{\"isHeader\":false,\"info\":{\"content\":\"判断2个被观察者发送的事件是否一样\",\"group\":\"条件\",\"title\":\"sequenceEqual\"}},{\"isHeader\":false,\"info\":{\"content\":\"判断发送的数据里面是否包含指定数据\",\"group\":\"条件\",\"title\":\"contains\"}},{\"isHeader\":false,\"info\":{\"content\":\"判断发送的数据是否为空\",\"group\":\"条件\",\"title\":\"isEmpty\"}},{\"isHeader\":false,\"info\":{\"content\":\"多个被观察者，只接收“第一个成功发送数据的被观察者”\",\"group\":\"条件\",\"title\":\"amb\"}},{\"header\":\"其他\",\"isHeader\":true},{\"isHeader\":false,\"info\":{\"content\":\"发送、接收事件的监听\",\"group\":\"其他\",\"title\":\"doOnEach\"}},{\"isHeader\":false,\"info\":{\"content\":\"发送、接收事件的监听\",\"group\":\"其他\",\"title\":\"doOnSubscribe\"}},{\"isHeader\":false,\"info\":{\"content\":\"发送、接收事件的监听\",\"group\":\"其他\",\"title\":\"doOnNext\"}},{\"isHeader\":false,\"info\":{\"content\":\"发送、接收事件的监听\",\"group\":\"其他\",\"title\":\"doAfterNext\"}},{\"isHeader\":false,\"info\":{\"content\":\"发送、接收事件的监听\",\"group\":\"其他\",\"title\":\"doOnComplete\"}},{\"isHeader\":false,\"info\":{\"content\":\"发送、接收事件的监听\",\"group\":\"其他\",\"title\":\"doOnError\"}},{\"isHeader\":false,\"info\":{\"content\":\"错误或异常处理：捕获异常并反馈特殊结果、正常终止\",\"group\":\"其他\",\"title\":\"onErrorReturn\"}},{\"isHeader\":false,\"info\":{\"content\":\"错误或异常处理：捕获异常并返回一个新的事件\",\"group\":\"其他\",\"title\":\"onErrorResumeNext\"}},{\"isHeader\":false,\"info\":{\"content\":\"错误或异常处理：异常重试\",\"group\":\"其他\",\"title\":\"retry\"}},{\"isHeader\":false,\"info\":{\"content\":\"事件重发\",\"group\":\"其他\",\"title\":\"repeat\"}},{\"isHeader\":false,\"info\":{\"content\":\"事件重发\",\"group\":\"其他\",\"title\":\"repeatWhen\"}},{\"isHeader\":false,\"info\":{\"content\":\"事件重发\",\"group\":\"其他\",\"title\":\"repeatUntil\"}},{\"isHeader\":false,\"info\":{\"content\":\"延迟发送被观察者的事件\",\"group\":\"其他\",\"title\":\"delay\"}},{\"isHeader\":false,\"info\":{\"content\":\"发送事件超时处理\",\"group\":\"其他\",\"title\":\"timeout\"}}]
+    </string>
+    <string name="exit_tip">再次点击返回键退出该应用程序</string>
+
+    <string name="drawer_header_rx_magic">Rx 魔法师</string>
+    <string name="drawer_header_not_used_to">你用不惯 RxJava</string>
+    <string name="drawer_header_lack_key">只因缺了这把钥匙</string>
+
+</resources>

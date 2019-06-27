@@ -1,6 +1,23 @@
 package com.kunminx.rxmagic.ui;
 
+/*
+ * Copyright (c) 2018-2019. KunMinX
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -8,31 +25,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.kunminx.linkage.LinkageRecyclerView;
+import com.kunminx.linkage.bean.DefaultGroupedItem;
 import com.kunminx.rxmagic.R;
 import com.kunminx.rxmagic.bean.RxExpression;
 import com.kunminx.rxmagic.bean.RxOperator;
 import com.kunminx.rxmagic.databinding.FragmentRxmagicBinding;
 import com.kunminx.rxmagic.ui.adapter.RxExpressionAdapter;
+import com.kunminx.rxmagic.ui.base.BaseFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import thereisnospon.codeview.CodeViewTheme;
 
 /**
  * Create by KunMinX at 19/4/20
  */
-public class RxMagicFragment extends Fragment {
+public class RxMagicFragment extends BaseFragment {
 
     private FragmentRxmagicBinding mBinding;
     private RxExpressionAdapter mAdapter;
-    private List<RxExpression> mRxExpressions = new ArrayList<>();
+    private static float DIALOG_HEIGHT = 480;
 
     public static RxMagicFragment newInstance() {
         Bundle args = new Bundle();
@@ -59,11 +80,46 @@ public class RxMagicFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
 
         mAdapter = new RxExpressionAdapter(getContext());
-        mAdapter.setList(mRxExpressions);
+        mAdapter.setOnButtonClickListener(new RxExpressionAdapter.OnItemClickListener() {
+            @Override
+            public void onOperatorButtonClick(View view, RxExpression item, int position) {
+                View view2 = View.inflate(getContext(), R.layout.layout_linkage, null);
+                LinkageRecyclerView linkage = view2.findViewById(R.id.linkage);
+                initLinkageDatas(linkage);
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+                AlertDialog dialog = builder.setView(linkage).show();
+                linkage.setLayoutHeight(DIALOG_HEIGHT);
+                linkage.setScrollSmoothly(false);
+                linkage.setDefaultOnItemBindListener(
+                        null,
+                        null,
+                        (holder, item1, position1) -> {
+                            holder.getView(R.id.level_2_item).setOnClickListener(v -> {
+                                item.getRxOperator().setName(item1.info.getTitle());
+                                mAdapter.notifyDataSetChanged();
+                                dialog.dismiss();
+                            });
+                        },
+                        null);
+            }
+
+            @Override
+            public void onDeleteButtonClick(View view, RxExpression item, int position) {
+                //to avoid click delete button too quickly to over animation and get index -1.
+                if (position == -1) {
+                    return;
+                }
+                mAdapter.removeCacheByPosition(position);
+                mAdapter.getList().remove(position);
+                mAdapter.notifyItemRemoved(position);
+                afterRemoveItems();
+            }
+        });
+
         mBinding.rv.setAdapter(mAdapter);
 
         mBinding.code.setTheme(CodeViewTheme.ARDUINO_LIGHT).fillColor();
-        mBinding.code.showCode(getString(R.string.test_code));
+        mBinding.code.showCode(getString(R.string.code_tip));
 
         mBinding.btnAdd.setOnClickListener(v -> {
             //TODO testData
@@ -72,28 +128,90 @@ public class RxMagicFragment extends Fragment {
             rxOperator.setGroup("Creator");
             RxExpression expression = new RxExpression();
             expression.setRxOperator(rxOperator);
+
             mAdapter.getList().add(expression);
             mAdapter.notifyItemInserted(mAdapter.getList().size() - 1);
-            if (!mBinding.btnDelete.isEnabled()) {
-                mBinding.btnDelete.setEnabled(true);
+
+            if (!mBinding.btnRemove.isEnabled() && mAdapter.getList().size() > 0) {
+                mBinding.btnRemove.setEnabled(true);
+                mBinding.btnClear.setEnabled(true);
+                mBinding.ivEmpty.setVisibility(View.GONE);
             }
         });
 
-        mBinding.btnDelete.setOnClickListener(v -> {
-            Snackbar.make(mBinding.btnPreview, getString(R.string.tip_developing), Snackbar.LENGTH_SHORT)
-                    .setAnchorView(mBinding.btnPreview)
-                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
+        mBinding.btnRemove.setOnClickListener(v -> {
+            // if isDeleteMode when click btnRemove, then everything is going to disDeleteMode. Visa versa.
+            boolean isDeleteMode = mAdapter.isDeleteMode();
+            mAdapter.setDeleteMode(!isDeleteMode);
+            mBinding.btnRemove.setText(isDeleteMode ? getString(R.string.btn_name_remove) : getString(R.string.btn_name_close));
+            mBinding.btnAdd.setEnabled(isDeleteMode);
+        });
+
+        mBinding.btnClear.setOnClickListener(v -> {
+            new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialogTheme)
+                    .setTitle(getString(R.string.dialog_title_warning))
+                    .setMessage(getString(R.string.dialog_msg_clear_op_list))
+                    .setPositiveButton(getString(R.string.sure), (dialog, which) -> {
+                        mAdapter.clearCache();
+                        mAdapter.getList().clear();
+                        mAdapter.notifyDataSetChanged();
+                        afterRemoveItems();
+                    })
+                    .setNegativeButton(getString(R.string.cancel), null)
                     .show();
         });
 
         mBinding.btnPreview.setOnClickListener(v -> {
-            Snackbar.make(mBinding.btnPreview, getString(R.string.tip_developing), Snackbar.LENGTH_SHORT)
-                    .setAnchorView(mBinding.btnPreview)
-                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
-                    .show();
+            String code = getCodeOfExpressions();
+            if (TextUtils.isEmpty(code)) {
+                showTip(v, getString(R.string.tip_of_developing));
+            } else {
+                mBinding.code.showCode(code);
+            }
         });
     }
 
+    private void afterRemoveItems() {
+        mBinding.btnClear.setEnabled(mAdapter.isDeleteMode() && mAdapter.getList().size() > 0);
+        if (mAdapter.getList().size() == 0) {
+            mBinding.ivEmpty.setVisibility(View.VISIBLE);
+            mBinding.code.showCode(getString(R.string.code_tip));
+            mBinding.btnRemove.setEnabled(false);
+            mAdapter.setDeleteMode(false);
+            mBinding.btnRemove.setText(getString(R.string.btn_name_remove));
+            mBinding.btnAdd.setEnabled(true);
+        }
+    }
+
+    private void initLinkageDatas(LinkageRecyclerView linkage) {
+        Gson gson = new Gson();
+        List<DefaultGroupedItem> items = gson.fromJson(getString(R.string.operators_json),
+                new TypeToken<List<DefaultGroupedItem>>() {
+                }.getType());
+
+        linkage.init(items);
+    }
+
+    private String getCodeOfExpressions() {
+        if (mAdapter.getList().size() == 0) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Output:\n\n").append("Observable");
+        for (RxExpression rxExpression : mAdapter.getList()) {
+            sb.append(".").append(rxExpression.getRxOperator().getName()).append("(");
+            String expression = rxExpression.getExpression();
+
+            //TODO if expression is i + 1, then make it i -> i + 1
+            sb.append(expression).append(")\n");
+        }
+        sb.append(".subscribe(getObserve());\n");
+        return sb.toString();
+    }
+
+    void setCardViewVisible(boolean isKeyboardShow) {
+        mBinding.cdvCode.setVisibility(isKeyboardShow ? View.GONE : View.VISIBLE);
+    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
